@@ -3,9 +3,9 @@
 [![pythonversion](https://img.shields.io/badge/python-3.4+-blue.svg)]()
 [![license](https://img.shields.io/badge/license-BSD--3-blue.svg)]()
 
-This package can get movie info, layout seats and use your own account to book movie ticket.
+This package can get movie info and seats layout ,using your own account to book movie ticket.
 
-This package are still under development, I only have completed one of subpackage, mm(mirama), of the cinemas.
+But it's still under development, I just completed one of subpackage, mm(mirama).
 
 `Note: This is a third party package, not official`
 
@@ -149,16 +149,16 @@ then you can parse response
 print(response.content.decode())
 ```
 
-if it success, you will find some strings are about final confirm, 
-ex "我已經閱讀並同意" or something else.
+If booking process succeeds, you will find some strings that are about final confirm, 
+e.g. "我已經閱讀並同意" or something else.
 
-Mostly, it will success, but in some case:
+Mostly, it will succeed, but in some cases:
 
 * B9 B10 B11 B12 anyone of them has been booked
 
 * your ticketdict {'std': 0,'discount': 2,'heart': 0,'old': 0} is different from your [seatdict['B12'][0], seatdict['B11'][0], seatdict['B9'][0],seatdict['B10'][0]]
 
-you will got seats that you don't expect.
+It will got seats that you don't expect.
 
 In my observation, their system will put default seats instead of your setting.
 
