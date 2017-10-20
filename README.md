@@ -156,13 +156,13 @@ Mostly, it will succeed, but in some cases:
 
 * B9 B10 B11 B12 anyone of them has been booked
 
-* your ticketdict {'std': 0,'discount': 2,'heart': 0,'old': 0} is different from your [seatdict['B12'][0], seatdict['B11'][0], seatdict['B9'][0],seatdict['B10'][0]]
+* Your ticketdict {'std': 0,'discount': 2,'heart': 0,'old': 0} is different from your [seatdict['B12'][0], seatdict['B11'][0], seatdict['B9'][0],seatdict['B10'][0]]
 
-It will got seats that you don't expect.
+You will got seats that you don't expect.
 
 In my observation, their system will put default seats instead of your setting.
 
-Finally
+Finally, just confirm it!
 ```python
 # confirm
 book.confirm()
