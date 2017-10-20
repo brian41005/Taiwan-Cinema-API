@@ -16,7 +16,7 @@ But it's still under development, I just completed one of subpackage, mm(mirama)
 * [bs4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 * [lxml](http://lxml.de/)
 ```
-pip install requests bs4 lxml
+pip3 install requests bs4 lxml
 ```
 ## Usage
 
