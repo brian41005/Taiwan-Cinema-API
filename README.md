@@ -149,7 +149,7 @@ then you can parse response
 print(response.content.decode())
 ```
 
-If booking process succeeds, you will find some strings that are about final confirm, 
+After setting seat, you will find some strings that are about final confirm, 
 e.g. "我已經閱讀並同意" or something else.
 
 Mostly, it will succeed, but in some cases:
