@@ -106,9 +106,9 @@ Output
 
 ### Booking usage
 ```python
-from twmovieapi import mm, user
+from twmovieapi import mm, User
 
-usr = user.User('config.json')
+usr = User('config.json')
 book = mm.Book(usr)
 
 # login
@@ -126,12 +126,7 @@ cid = info.getcid('MM')
 book.set_screenings(cid, sid)
 
 # set ticket
-ticketdict = {'std': 0,
-              'discount': 2,
-              'heart': 0,
-              'old': 0
-              }
-response = book.set_ticket(ticketdict)
+response = book.set_ticket(discounted=2)
 
 # parse seat info
 seatdict = mm.seat.get_seat(response)

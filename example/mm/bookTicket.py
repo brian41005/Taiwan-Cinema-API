@@ -21,12 +21,8 @@ cid = info.getcid('MM')
 book.set_screenings(cid, sid)
 
 # set ticket
-ticketdict = {'std': 0,
-              'discount': 2,
-              'heart': 0,
-              'old': 0
-              }
-response = book.set_ticket(ticketdict)
+
+response = book.set_ticket(discounted=2)
 
 # parse seat info
 seatdict = mm.seat.get_seat(response)
@@ -42,4 +38,4 @@ response = book.set_seat([seatdict['B12'][0],
 print(response.content.decode())
 
 # confirm
-book.confirm()
+# book.confirm()

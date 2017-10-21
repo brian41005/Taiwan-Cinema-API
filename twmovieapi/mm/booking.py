@@ -40,30 +40,33 @@ class Book(object):
         # passr = self.s.get('http://www.miramarcinemas.com.tw/booking_data.aspx',
         #                    params={'cid': cid, 'sid': sid, })
 
-    def set_ticket(self, ticketdict):
+    def set_ticket(self, *, std=0, discounted=0, disabled=0, old=0):
         '''
-        ticketdict: dict
-            {'std':0,
-             'discount':0,
-             'heart':0,
-             'old':0
-            }
+        std: int
+
+        discointed: int
+
+        disabled: int
+
+        old: int
         '''
+        if sum([std, disabled, discounted, old]) == 0:
+            raise ValueError('std, disabled, discounted, old should be set')
         url = 'http://www.miramarcinemas.com.tw/booking_seat.aspx'
         self.r = self.s.post(url,
                              data={'iptCine': self.cid,
                                    'iptSess': self.sid,
-                                   'ticket_0001': str(ticketdict['std']),
+                                   'ticket_0001': str(std),
                                    'price_0001': '260',
                                    'name_0001': '全票',
-                                   'ticket_0581': str(ticketdict['discount']),
+                                   'ticket_0581': str(discounted),
                                    'price_0581': '260',
                                    'name_0581': '優待票',
-                                   'ticket_0345': str(ticketdict['heart']),
+                                   'ticket_0345': str(disabled),
                                    'price_0345': '155',
                                    'name_0345': '愛心票',
                                    'ticket_0015': '0',
-                                   'price_0015': str(ticketdict['old']),
+                                   'price_0015': str(old),
                                    'name_0015': '敬老票'
                                    })
         return self.r
