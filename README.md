@@ -85,12 +85,7 @@ for m, d, t in info.get('MM'):
 cid = info.getcid('MM')
 
 book.set_screenings(cid, sid)
-ticketdict = {'std': 0,
-              'discount': 1,
-              'heart': 0,
-              'old': 0
-              }
-response = book.set_ticket(ticketdict)
+response = book.set_ticket(discounted=2)
 
 # parse seat info
 seatdict = mm.seat.get_seat(response)
