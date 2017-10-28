@@ -47,10 +47,7 @@ def print_seating_chart(seatingChart):
             if c is None:
                 print(Color.B_BLACK + '%3s' % (''), end=' ')
             else:
-                if c[1]:
-                    back = Color.B_GREEN
-                else:
-                    back = Color.B_RED
+                back = Color.B_GREEN if c[1] else Color.B_RED
                 print(back + '%3s' % (c[0]), end=' ')
         print(Color.B_BLACK)
     print(Color.RESET)
