@@ -137,7 +137,7 @@ response = book.set_seat([seatdict['B12'][0],
 ```
 then you can parse response
 ```python
-# you will seat final confirm page
+# response a html page
 print(response.content.decode())
 ```
 
@@ -154,7 +154,8 @@ You will got seats that you don't expect.
 
 In my observation, their system will put default seats instead of your setting.
 
-Finally, just confirm it!
+* Finally, just confirm it!
+
 ```python
 # confirm
 book.confirm()
