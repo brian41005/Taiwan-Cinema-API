@@ -20,6 +20,8 @@ pip3 install requests bs4 lxml
 ```
 ## Usage
 
+[example](example/example.ipynb)
+
 ### Config file
 * In ./config.json
 
@@ -28,7 +30,7 @@ pip3 install requests bs4 lxml
     "mail": "1234@gmail.com",
     "passwd": "1234",
     "phone": "0970000000",
-    "name": "GEEK Ma",
+    "name": "XXX",
     "candidate":["I11","I12"]
 }
 ```
