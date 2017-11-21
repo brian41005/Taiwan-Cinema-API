@@ -16,15 +16,18 @@ class Book(object):
         self.r = None
         self.digits = ocr.get_digit()
 
+    def _handle_captcha(self, captcha_url):
+        img = ocr.getimg(captcha_url, self.s)
+        return str(ocr.argmin(img, self.digits))
+
     def login(self):
         url = 'https://www.miramarcinemas.com.tw/member_login.aspx'
         soup = BeautifulSoup(self.s.get(url).content.decode(), 'lxml')
+
         captcha_urls = ['https://www.miramarcinemas.com.tw/draw.ashx?r_id=num%d&t=636468952047677500' %
                         (i) for i in range(1, 5)]
-        captcha = ''
-        for captcha_url in captcha_urls:
-            img = ocr.getimg(captcha_url, self.s)
-            captcha += str(ocr.argmin(img, self.digits))
+
+        captcha = ''.join(map(self._handle_captcha, captcha_urls))
 
         VIEWSTATE = soup.find_all(
             'input', attrs={'name': '__VIEWSTATE'})[0]['value']
