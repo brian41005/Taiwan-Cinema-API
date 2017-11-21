@@ -38,4 +38,5 @@ response = book.set_seat([seatdict['B12'][0],
 print(response.content.decode())
 
 # confirm
-# book.confirm()
+#
+#  book.confirm()

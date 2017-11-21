@@ -1,21 +1,30 @@
 import lxml
 import requests
 from bs4 import BeautifulSoup
+from . import ocr
 
 
 class Book(object):
     def __init__(self, user):
         self.s = requests.Session()
         self.s.headers.update(
-            {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.360',
+            {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \
+            (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.360',
              'Connection': 'keep-alive'
              })
         self.user = user
         self.r = None
+        self.digits = ocr.get_digit()
 
     def login(self):
         url = 'https://www.miramarcinemas.com.tw/member_login.aspx'
         soup = BeautifulSoup(self.s.get(url).content.decode(), 'lxml')
+        captcha_urls = ['https://www.miramarcinemas.com.tw/draw.ashx?r_id=num%d&t=636468952047677500' %
+                        (i) for i in range(1, 5)]
+        captcha = ''
+        for captcha_url in captcha_urls:
+            img = ocr.getimg(captcha_url, self.s)
+            captcha += str(ocr.argmin(img, self.digits))
 
         VIEWSTATE = soup.find_all(
             'input', attrs={'name': '__VIEWSTATE'})[0]['value']
@@ -28,10 +37,12 @@ class Book(object):
                 '__VIEWSTATEGENERATOR': VIEWSTATEGENERATOR,
                 '__EVENTVALIDATION': EVENTVALIDATION,
                 'ctl00$content$account': self.user.mail,
-                'ctl00$content$password': self.user.passwd}
+                'ctl00$content$password': self.user.passwd,
+                'ctl00$content$txtValidate': captcha}
         self.r = self.s.post(
             'https://www.miramarcinemas.com.tw/member_login.aspx',
             data=data)
+        # print(self.r.content.decode())
         return self.r
 
     def set_screenings(self, cid, sid):

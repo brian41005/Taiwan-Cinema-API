@@ -8,5 +8,5 @@ setup(
     author='Brian Ma',
     author_email='brian41005@gmail.com',
     packages=['twmovieapi'],
-    install_requires=['lxml', 'bs4', 'requests']
+    install_requires=['lxml', 'bs4', 'requests', 'Pillow']
 )

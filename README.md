@@ -15,8 +15,10 @@ But it's still under development, I just completed one of subpackage, mm(mirama)
 * [requests](http://docs.python-requests.org/en/master/)
 * [bs4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 * [lxml](http://lxml.de/)
+* [pillow](https://github.com/python-pillow/Pillow)
+
 ```
-pip3 install requests bs4 lxml
+pip3 install requests bs4 lxml Pillow
 ```
 ## Usage
 
