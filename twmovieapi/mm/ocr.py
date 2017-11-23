@@ -17,6 +17,7 @@ def getimg(filename, session=None):
         response = session.get(filename, stream=True)
         response.raw.decode_content = True
         img = Image.open(response.raw).convert('LA')
+        # img.save(filename[-28:] + '.png')
         return img
     else:
         return Image.open(filename).convert('LA')
@@ -25,8 +26,9 @@ def getimg(filename, session=None):
 def get_digit():
     mypath = os.path.join(os.path.dirname(__file__), 'digit')
     img_list = []
-    files = [f for f in os.listdir(
-        mypath) if os.path.isfile(os.path.join(mypath, f))]
+    files = [f for f in os.listdir(mypath)
+             if os.path.isfile(os.path.join(mypath, f))]
+    files.sort()
     for f in files:
         filename = os.path.join(mypath, f)
         img_list.append(getimg(filename))
@@ -34,6 +36,8 @@ def get_digit():
 
 
 def compare(img1, img2):
+    img1.thumbnail((25, 25), Image.ANTIALIAS)
+    img2.thumbnail((25, 25), Image.ANTIALIAS)
     h = ImageChops.difference(img1, img2).histogram()
 
     sq = (value * ((idx % 256)**2) for idx, value in enumerate(h))
@@ -46,7 +50,8 @@ def argmin(img, candidate):
     result = []
     for c in candidate:
         result.append(compare(img, c))
-    return result.index(min(result)) + 1
+    num = result.index(min(result)) + 1
+    return num
 
 
 if __name__ == '__main__':

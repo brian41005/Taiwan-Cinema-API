@@ -24,33 +24,35 @@ class MovieInfo(object):
             'TAIIMA': '1004|TAIIMA',
             'NH': '1005|NH'
         }
-        self.s = requests.Session()
+        self.session = requests.Session()
         self.url = 'https://www.miramarcinemas.com.tw/booking.aspx'
-        self.header = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'}
-        r = self.s.get(self.url)
+        # self.header = {
+        #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'}
+        self._init()
+        self.is_executed = False
+        # self.cinemaList = filterby(self.soup, 'ctl00$content$CinemaList')
+
+    def _init(self):
+        r = self.session.get(self.url)
         self.soup = BeautifulSoup(r.content.decode(), 'lxml')
         self.payload = {'__EVENTTARGET': 'ctl00$content$CinemaList',
                         '__EVENTARGUMENT': '',
                         '__LASTFOCUS': ''}
 
         self._update_event_valid()
-        self.cinemaList = filterby(self.soup, 'ctl00$content$CinemaList')
 
     def _update_event_valid(self):
-        EVENTVALIDATION = self.soup.find(
-            'input', attrs={'name': '__EVENTVALIDATION'})['value']
-        VIEWSTATE = self.soup.find(
-            'input', attrs={'name': '__VIEWSTATE'})['value']
-        VIEWSTATEGENERATOR = self.soup.find(
-            'input', attrs={'name': '__VIEWSTATEGENERATOR'})['value']
-        self.payload['__EVENTVALIDATION'] = EVENTVALIDATION
-        self.payload['__VIEWSTATE'] = VIEWSTATE
-        self.payload['__VIEWSTATEGENERATOR'] = VIEWSTATEGENERATOR
+        event_valid = ['__EVENTVALIDATION',
+                       '__VIEWSTATE',
+                       '__VIEWSTATEGENERATOR']
+        for each_tuple in event_valid:
+            new_state = self.soup.find(
+                'input', attrs={'name': each_tuple})['value']
+            self.payload[each_tuple] = new_state
 
     def select(self, f, payload):
         self.payload.update(payload)
-        r = self.s.post(self.url, data=self.payload)
+        r = self.session.post(self.url, data=self.payload)
         self.soup = BeautifulSoup(r.content.decode(), 'lxml')
         self._update_event_valid()
         return filterby(self.soup, f)
@@ -93,6 +95,10 @@ class MovieInfo(object):
             'NH'      美麗華大直皇家影城
 
         '''
+        if self.is_executed:
+            self._init()
+
+        self.is_executed = True
         cid = self.cinemahash[cinema]
         payload = {'ctl00$content$CinemaList': cid,
                    'ctl00$content$MovieList': ''}
@@ -106,8 +112,14 @@ class MovieInfo(object):
                            'ctl00$content$MovieList': m['id'],
                            'ctl00$content$DateList': d['id']}
                 timeList = self.select('ctl00$content$TimerList', payload)
+                d['date'] = d.pop('name')
+
                 for t in timeList:
-                    name, _, left = t['name'].replace('\t', ' ').split()
-                    t['name'] = name
+                    name, _, left = t.pop('name').replace('\t', ' ').split()
+                    t['time'] = name
                     t['left'] = left
-                    yield m, d, t
+                    # yield m, d, t
+                    result = {}
+                    for each in (m, d, t):
+                        result.update(each)
+                    yield result

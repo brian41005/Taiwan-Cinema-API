@@ -62,14 +62,13 @@ from twmovieapi import mm
 # get mirama movie screenings info
 info = mm.MovieInfo()
 
-for m, d, t in info.get('MM'):
-    print(m, d, t)
-    break
+for item in info.get('MM'):
+    print(item)
 ```
 output
 
 ```
-{'name': '(中文版)CARS 3 閃電再起', 'id': '(CHI)CARS 3'} {'name': '8 月 20日 星期日', 'id': '20170820000000'} {'name': '09:25', 'id': '787544', 'left': '239'}
+{'name': '(中文版)可可夜總會', 'id': '804097', 'date': '11 月 24日 星期五', 'time': '09:40', 'left': '254'}
 ```
 
 ### Get seat
@@ -82,9 +81,8 @@ book = mm.Book(u)
 book.login()
 
 info = mm.MovieInfo()
-for m, d, t in info.get('MM'):
-    print(m, d, t)
-    sid = t['id']
+for item in info.get('MM'):
+    sid = item['id']
     break
 cid = info.getcid('MM')
 
@@ -115,9 +113,8 @@ book.login()
 
 # select movie
 info = mm.MovieInfo()
-for m, d, t in info.get('MM'):
-    print(m, d, t)
-    sid = t['id']
+for item in info.get('MM'):
+    sid = item['id']
     break
 cid = info.getcid('MM')
 
